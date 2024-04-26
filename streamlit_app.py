@@ -82,7 +82,7 @@ def main():
                 2. Provide "Booked", "Excused", "Not a Lead" or "Unbooked", without any additional text.
                 3. Only provide output in json where the first line provide "Class" and the value is "Booked", "Excused", "Not a Lead" or "Unbooked". 
                 Second line provide "Explanation" and the value is the reasoning for the decision. Third provide "Summary" of the call in 5 lines. 
-                Lastly, provide "Entities" including 1. Customer name, 2. address, 3. Services Requested, 4. Reason of call. 
+                Lastly, provide "Entities" including 1. Customer Name, 2. address, 3. Services Requested, 4. Reason of call. 
 
                 """
                 analysis = get_openAI_response(prompt)

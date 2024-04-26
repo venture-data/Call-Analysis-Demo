@@ -12,6 +12,8 @@ if 'transcript' not in st.session_state:
     st.session_state['transcript'] = ''
 if 'analysis' not in st.session_state:
     st.session_state['analysis'] = ''
+if 'analyzed' not in st.session_state:
+    st.session_state['analyzed'] = 'false'
 
 
 if ENVIRONMENT == 'Production':
@@ -73,11 +75,7 @@ def main():
             st.sidebar.success("Analysis Started")
             transcript = aai.Transcriber().transcribe(uploaded_file)
             st.session_state.transcript = transcript.text
-            # Display the transcription
-            st.subheader("Transcription:")
-            # Use a container to hold the transcription
-            stx.scrollableTextbox(st.session_state.transcript, height = 300)
-            # st.text_area("", transcript.text, height=300, disabled=False)
+            st.session_state.analyzed = 'true'
 
             if transcript.text:
 
@@ -159,13 +157,14 @@ if __name__ == "__main__":
             stx.scrollableTextbox(st.session_state.transcript, height = 300)
             # st.text_area("", transcript.text, height=300, disabled=False)
 
-            # Chat interface
-            st.header("Ask Questions")
-            user_question = st.text_input("Enter your question related to the call:")
-            if st.button("Submit Question"):
-                if user_question:
-                    
-                    response = get_openai_response(user_question, st.session_state.transcript)
-                    st.text_area("Response", value=response, height=150, disabled=True)
-                else:
-                    st.warning("Please enter a question.")
+            if st.session_state.analyzed == 'true':
+                # Chat interface
+                st.header("Ask Questions")
+                user_question = st.text_input("Enter your question related to the call:")
+                if st.button("Submit Question"):
+                    if user_question:
+                        
+                        response = get_openai_response(user_question, st.session_state.transcript)
+                        st.text_area("Response", value=response, height=150, disabled=True)
+                    else:
+                        st.warning("Please enter a question.")

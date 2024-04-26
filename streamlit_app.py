@@ -3,13 +3,17 @@ import streamlit_scrollable_textbox as stx
 import assemblyai as aai
 import openai
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import json
 
-load_dotenv()
+# load_dotenv()
 
-assembly_ai = os.environ.get('ASSEMBLY_AI_KEY')
-open_ai = os.environ.get('OPEN_AI_KEY')
+# assembly_ai = os.environ.get('ASSEMBLY_AI_KEY')
+# open_ai = os.environ.get('OPEN_AI_KEY')
+
+assembly_ai = st.secrets['ASSEMBLY_AI_KEY']
+open_ai = st.secrets['OPEN_AI_KEY']
+
 
 aai.settings.api_key = assembly_ai
 

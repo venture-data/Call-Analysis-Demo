@@ -35,7 +35,11 @@ def main():
 
 
     st.sidebar.image("venturedata-removebg-preview.png", channels="RGB")
-    st.sidebar.title("GenAI - Calls Analysis")
+    # Use HTML and CSS to center the title in the sidebar
+    st.sidebar.markdown(
+        "<h1 style='text-align: center;'>GenAI - Calls Analysis</h1>", 
+        unsafe_allow_html=True
+    )
 
     uploaded_file = st.file_uploader("Upload an audio file (WAV or MP3)", type=["wav", "mp3"])
 

@@ -34,7 +34,7 @@ def get_openAI_response(prompt, model="gpt-3.5-turbo-0125", temperature = 0):
 def main():
 
 
-    st.sidebar.image("venturedata.jpeg", width=100, use_column_width=False, clamp=True, channels="RGB")
+    st.sidebar.image("venturedata-removebg-preview.png", channels="RGB")
     st.sidebar.title("GenAI - Calls Analysis")
 
     uploaded_file = st.file_uploader("Upload an audio file (WAV or MP3)", type=["wav", "mp3"])

@@ -10,6 +10,11 @@ ENVIRONMENT = "Production" # Local or Production
 # Initialization
 if 'transcript' not in st.session_state:
     st.session_state['transcript'] = ''
+if 'analysis' not in st.session_state:
+    st.session_state['analysis'] = ''
+
+
+
 
 if ENVIRONMENT == 'Production':
     assembly_ai = st.secrets['ASSEMBLY_AI_KEY']
@@ -105,47 +110,50 @@ def main():
 
                 """
                 analysis = get_openAI_response(prompt)
-                
-                data = json.loads(analysis)
-
-                # Access elements separately
-                class_value = data["Class"]
-                explanation_value = data["Explanation"]
-                summary_value = data["Summary"]
-                entities = data['Entities']
-                
-                st.header("Analysis")
-
-                st.subheader("Call Summary")
-                st.markdown(summary_value)
-
-                st.subheader("Class")
-                st.markdown(class_value)
-
-                st.subheader("Reasoning")
-                st.markdown(explanation_value)
-
-                st.subheader("Entities")
-                for i, (k, v) in enumerate(entities.items()):
-                    with st.container():
-                        col1, col2 = st.columns([2, 4])
-                        with col1:
-                            st.markdown(f"**{i+1}. {k}**")
-                        with col2:
-                            st.markdown(v)
-                
-                
-                if class_value == "Booked":
-                    st.success("Trigger Sent.")
-                else:
-                    st.error("Trigger Sent.")
-                
-                st.sidebar.success("Analysis Completed")
-
+                st.session_state.analysis = analysis
     
 
 if __name__ == "__main__":
     main()
+
+    if "analysis" in st.session_state.keys():
+        if len(st.session_state.analysis) > 0:
+            data = json.loads(st.session_state.analysis)
+            # Access elements separately
+            class_value = data["Class"]
+            explanation_value = data["Explanation"]
+            summary_value = data["Summary"]
+            entities = data['Entities']
+            
+            st.header("Analysis")
+
+            st.subheader("Call Summary")
+            st.markdown(summary_value)
+
+            st.subheader("Class")
+            st.markdown(class_value)
+
+            st.subheader("Reasoning")
+            st.markdown(explanation_value)
+
+            st.subheader("Entities")
+            for i, (k, v) in enumerate(entities.items()):
+                with st.container():
+                    col1, col2 = st.columns([2, 4])
+                    with col1:
+                        st.markdown(f"**{i+1}. {k}**")
+                    with col2:
+                        st.markdown(v)
+            
+            
+            if class_value == "Booked":
+                st.success("Trigger Sent.")
+            else:
+                st.error("Trigger Sent.")
+            
+            st.sidebar.success("Analysis Completed")
+
+
     if "transcript" in st.session_state.keys():
         if len(st.session_state.transcript) > 1:
             # Chat interface

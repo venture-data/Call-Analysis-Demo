@@ -14,8 +14,6 @@ if 'analysis' not in st.session_state:
     st.session_state['analysis'] = ''
 
 
-
-
 if ENVIRONMENT == 'Production':
     assembly_ai = st.secrets['ASSEMBLY_AI_KEY']
     open_ai = st.secrets['OPEN_AI_KEY']
@@ -75,12 +73,6 @@ def main():
             st.sidebar.success("Analysis Started")
             transcript = aai.Transcriber().transcribe(uploaded_file)
             st.session_state.transcript = transcript.text
-            
-            # Display the transcription
-            st.subheader("Transcription:")
-            # Use a container to hold the transcription
-            stx.scrollableTextbox(transcript.text, height = 300)
-            # st.text_area("", transcript.text, height=300, disabled=False)
 
             if transcript.text:
 
@@ -115,6 +107,14 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    if "transcript" in st.session_state.keys():
+        if len(st.session_state.transcript) > 0:
+            # Display the transcription
+            st.subheader("Transcription:")
+            # Use a container to hold the transcription
+            stx.scrollableTextbox(st.session_state.transcript, height = 300)
+            # st.text_area("", transcript.text, height=300, disabled=False)
 
     if "analysis" in st.session_state.keys():
         if len(st.session_state.analysis) > 0:

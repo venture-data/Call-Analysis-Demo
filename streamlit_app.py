@@ -4,8 +4,6 @@ import assemblyai as aai
 import openai
 import os
 import json
-from dotenv import load_dotenv
-
 
 ENVIRONMENT = "Production" # Local or Production
 
@@ -18,6 +16,7 @@ if ENVIRONMENT == 'Production':
     open_ai = st.secrets['OPEN_AI_KEY']
     
 elif ENVIRONMENT == 'Local':
+    from dotenv import load_dotenv
     load_dotenv()
     assembly_ai = os.getenv('ASSEMBLY_AI_KEY')
     open_ai = os.getenv('OPEN_AI_KEY')

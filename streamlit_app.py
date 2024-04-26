@@ -73,6 +73,11 @@ def main():
             st.sidebar.success("Analysis Started")
             transcript = aai.Transcriber().transcribe(uploaded_file)
             st.session_state.transcript = transcript.text
+            # Display the transcription
+            st.subheader("Transcription:")
+            # Use a container to hold the transcription
+            stx.scrollableTextbox(st.session_state.transcript, height = 300)
+            # st.text_area("", transcript.text, height=300, disabled=False)
 
             if transcript.text:
 
@@ -91,7 +96,7 @@ def main():
                 Transcript:
                 [The transcript of the call is provided within triple backticks.]
 
-                ```{transcript.text}```
+                ```{st.session_state.transcript}```
 
                 Steps to follow:
                 1. Analyze the transcript and determine the call category. But dont Give output yet.
@@ -107,14 +112,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    if "transcript" in st.session_state.keys():
-        if len(st.session_state.transcript) > 0:
-            # Display the transcription
-            st.subheader("Transcription:")
-            # Use a container to hold the transcription
-            stx.scrollableTextbox(st.session_state.transcript, height = 300)
-            # st.text_area("", transcript.text, height=300, disabled=False)
 
     if "analysis" in st.session_state.keys():
         if len(st.session_state.analysis) > 0:
@@ -155,7 +152,13 @@ if __name__ == "__main__":
 
 
     if "transcript" in st.session_state.keys():
-        if len(st.session_state.transcript) > 1:
+        if len(st.session_state.transcript) > 0:
+            # Display the transcription
+            st.subheader("Transcription:")
+            # Use a container to hold the transcription
+            stx.scrollableTextbox(st.session_state.transcript, height = 300)
+            # st.text_area("", transcript.text, height=300, disabled=False)
+
             # Chat interface
             st.header("Ask Questions")
             user_question = st.text_input("Enter your question related to the call:")

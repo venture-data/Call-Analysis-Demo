@@ -3,21 +3,40 @@ import streamlit_scrollable_textbox as stx
 import assemblyai as aai
 import openai
 import os
-# from dotenv import load_dotenv
 import json
+from dotenv import load_dotenv
 
-# load_dotenv()
 
-# assembly_ai = os.environ.get('ASSEMBLY_AI_KEY')
-# open_ai = os.environ.get('OPEN_AI_KEY')
+ENVIRONMENT = "Production" # Local or Production
 
-assembly_ai = st.secrets['ASSEMBLY_AI_KEY']
-open_ai = st.secrets['OPEN_AI_KEY']
+# Initialization
+if 'transcript' not in st.session_state:
+    st.session_state['transcript'] = ''
+
+if ENVIRONMENT == 'Production':
+    assembly_ai = st.secrets['ASSEMBLY_AI_KEY']
+    open_ai = st.secrets['OPEN_AI_KEY']
+    
+elif ENVIRONMENT == 'Local':
+    load_dotenv()
+    assembly_ai = os.getenv('ASSEMBLY_AI_KEY')
+    open_ai = os.getenv('OPEN_AI_KEY')
 
 
 aai.settings.api_key = assembly_ai
-
 client = openai.Client(api_key=open_ai)
+
+
+def get_openai_response(question, transcript, model="gpt-3.5-turbo-0125"):
+    response = client.chat.completions.create(
+        model= model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that only answers from call transcript."},
+            {"role": "user", "content": transcript},
+            {"role": "user", "content": question}
+        ]
+    )
+    return response.choices[0].message.content
 
 
 def get_openAI_response(prompt, model="gpt-3.5-turbo-0125", temperature = 0):
@@ -51,6 +70,7 @@ def main():
 
             st.sidebar.success("Analysis Started")
             transcript = aai.Transcriber().transcribe(uploaded_file)
+            st.session_state.transcript = transcript.text
             
             # Display the transcription
             st.subheader("Transcription:")
@@ -123,6 +143,19 @@ def main():
                 
                 st.sidebar.success("Analysis Completed")
 
+    
 
 if __name__ == "__main__":
     main()
+    if "transcript" in st.session_state.keys():
+        if len(st.session_state.transcript) > 1:
+            # Chat interface
+            st.header("Ask Questions")
+            user_question = st.text_input("Enter your question related to the call:")
+            if st.button("Submit Question"):
+                if user_question:
+                    
+                    response = get_openai_response(user_question, st.session_state.transcript)
+                    st.text_area("Response", value=response, height=150, disabled=True)
+                else:
+                    st.warning("Please enter a question.")

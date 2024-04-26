@@ -35,7 +35,7 @@ def main():
 
 
     st.sidebar.image("venturedata.jpeg", width=100, use_column_width=False, clamp=True, channels="RGB")
-    st.sidebar.title("Audio Analysis")
+    st.sidebar.title("GenAI - Calls Analysis")
 
     uploaded_file = st.file_uploader("Upload an audio file (WAV or MP3)", type=["wav", "mp3"])
 

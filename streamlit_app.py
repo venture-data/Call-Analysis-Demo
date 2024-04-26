@@ -13,8 +13,6 @@ open_ai = os.environ.get('OPEN_AI_KEY')
 
 aai.settings.api_key = assembly_ai
 
-# Initialize the OpenAI client
-# Create the OpenAI client with the API key
 client = openai.Client(api_key=open_ai)
 
 

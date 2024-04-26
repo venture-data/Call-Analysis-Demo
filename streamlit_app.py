@@ -34,7 +34,7 @@ def get_openAI_response(prompt, model="gpt-3.5-turbo-0125", temperature = 0):
 def main():
 
 
-    st.sidebar.image("venturedata-removebg-preview.png", width=280, channels="RGB")
+    st.sidebar.image("venturedata-removebg-preview.png", width=284, channels="RGB")
     # Use HTML and CSS to center the title in the sidebar
     st.sidebar.markdown(
         "<h1 style='text-align: center;'>GenAI - Calls Analysis</h1>", 
